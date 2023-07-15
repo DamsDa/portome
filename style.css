@@ -1,0 +1,19 @@
+body{
+    font-family: 'Yuji Boku', serif;
+}
+section{
+    padding-top: 5rem;
+}
+
+.jumbotron{
+    padding-top: 6rem;
+    background-color: #f2dede;
+}
+
+#card{
+    background-color: #f2dede;
+}
+
+footer{
+    background-color: #bb294d;
+}
