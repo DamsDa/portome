@@ -169,20 +169,28 @@
         </div>
         <div class="row justify-content-center">
           <div class="col-md-8">
-            <form>
+            <div class="alert alert-success alert-dismissible fade show d-none" role="alert">
+              <strong>Pesan anda</strong> Sudah terkirim terimakasih sudah berkunjung.
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <form name="contact-dams">
               <div class="mb-3">
                 <label for="nama" class="form-label">Nama Lengkap</label>
-                <input type="text" class="form-control" id="nama" aria-describedby="nama" />
+                <input type="text" class="form-control" id="nama" aria-describedby="nama" name="nama"/>
               </div>
               <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" aria-describedby="email" />
+                <input type="email" class="form-control" id="email" aria-describedby="email" name="email"/>
               </div>
               <div class="mb-3">
                 <label for="pesan" class="form-label">Pesan</label>
-                <textarea class="form-control" id="pesan" rows="3"></textarea>
+                <textarea class="form-control" id="pesan" rows="3" name="pesan"></textarea>
               </div>
-              <button type="submit" class="btn btn-primary">Kirim</button>
+              <button type="submit" class="btn text-white btnkirim" style="background-color: #bb294d">Kirim</button>
+              <button class="btn text-white btnloading d-none" style="background-color: #bb294d" type="button" disabled>
+                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                Loading...
+              </button>
             </form>
           </div>
         </div>
@@ -203,6 +211,36 @@
     </footer>
     <!-- end footer -->
 
+    <!-- butosturap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <!-- script from goggle sheet -->
+    <script>
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzIVwcs4Vlabj3EtG0osImzbi4GY_fWRhN5Sy92w4RvmwmxiVGmha7MblvYUM4L5qyZ6Q/exec'
+      const form = document.forms['contact-dams']
+      const btnkirim = document.querySelector(".btnkirim")
+      const btnloading = document.querySelector(".btnloading")
+      const alert = document.querySelector(".alert")
+
+      
+      form.addEventListener('submit', e => {
+        e.preventDefault()
+        // ketika tombol kirim di klik
+        // maka tampilkan loading dan hilangkan kirim
+        btnkirim.classList.toggle("d-none");
+        btnloading.classList.toggle("d-none");
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+          .then(response => {
+            // setelah success tampilkan kirim dan hilangkan loading
+            btnkirim.classList.toggle("d-none");
+            btnloading.classList.toggle("d-none");
+            // tampilkan alert
+            alert.classList.toggle("d-none");
+            // reset form
+            form.reset();
+            console.log('Success!', response)
+          })
+          .catch(error => console.error('Error!', error.message))
+      })
+    </script>
   </body>
 </html>
